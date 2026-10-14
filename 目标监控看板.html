@@ -280,6 +280,11 @@
 
 </div>
 
+<div id="week-history" style="margin-top:16px;display:none">
+  <div style="font-size:0.78rem;color:var(--sub);margin-bottom:8px">📅 历史存档</div>
+  <div id="history-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+</div>
+
 <div style="text-align:center;color:var(--sub);font-size:0.68rem;margin-top:20px">
   数据存本地 · 关闭不丢失 · 换设备需导出备份
 </div>
@@ -331,15 +336,61 @@ function saveData(key, data) {
 }
 
 // ============ 周重置逻辑 ============
+function getWeekLabel(key) {
+  const parts = key.split('-W');
+  if (parts.length < 2) return key;
+  const year = parseInt(parts[0]);
+  const week = parseInt(parts[1]);
+  const jan1 = new Date(year, 0, 1);
+  const daysOffset = (week - 1) * 7;
+  const monStart = new Date(jan1);
+  monStart.setDate(jan1.getDate() + daysOffset - ((jan1.getDay() + 6) % 7));
+  const sunEnd = new Date(monStart);
+  sunEnd.setDate(monStart.getDate() + 6);
+  return `${monStart.getMonth()+1}/${monStart.getDate()}~${sunEnd.getMonth()+1}/${sunEnd.getDate()}`;
+}
+
 function checkWeekReset() {
   const key = getWeekKey();
   const healthData = getData('goal_v3_health');
+  if (healthData.weekKey && healthData.weekKey !== key) {
+    // 保存上周记录
+    if (!healthData.history) healthData.history = [];
+    const prev = {
+      weekKey: healthData.weekKey,
+      weekLabel: getWeekLabel(healthData.weekKey),
+      swim: healthData.week.swim,
+      run: healthData.week.run
+    };
+    healthData.history.unshift(prev);
+    if (healthData.history.length > 8) healthData.history.pop();
+  }
   if (healthData.weekKey !== key) {
     healthData.week = {swim:0, run:0};
     healthData.weekKey = key;
     saveData('goal_v3_health', healthData);
   }
   updateWeekUI();
+  renderHistory();
+}
+
+function renderHistory() {
+  const data = getData('goal_v3_health');
+  const container = document.getElementById('week-history');
+  const list = document.getElementById('history-list');
+  if (!data.history || data.history.length === 0) {
+    container.style.display = 'none';
+    return;
+  }
+  container.style.display = 'block';
+  list.innerHTML = '';
+  data.history.forEach(item => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--card);border-radius:8px;padding:8px 12px;font-size:0.72rem;border:1px solid var(--border)';
+    div.innerHTML = `<div style="color:var(--sub);margin-bottom:2px">${item.weekLabel}</div>
+      <div>🏊 ${item.swim}/${WEEK_TARGETS.swim} &nbsp; 🏃 ${item.run}/${WEEK_TARGETS.run}</div>`;
+    list.appendChild(div);
+  });
 }
 
 // ============ 周任务操作 ============
