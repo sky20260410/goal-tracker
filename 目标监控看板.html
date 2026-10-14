@@ -342,10 +342,12 @@ function weekInc(type) {
   const target = WEEK_TARGETS[type];
   if (data.week[type] < target) {
     data.week[type]++;
-    saveData('goal_v3_health', data);
-    updateWeekUI();
-    updateHealthRing();
+  } else {
+    data.week[type] = Math.max(0, data.week[type] - 1);
   }
+  saveData('goal_v3_health', data);
+  updateWeekUI();
+  updateHealthRing();
 }
 
 function updateWeekUI() {
@@ -355,7 +357,7 @@ function updateWeekUI() {
     const target = WEEK_TARGETS[type];
     const btn = document.getElementById('wk-' + type + '-btn');
     const count = document.getElementById('wk-' + type + '-count');
-    btn.textContent = done >= target ? '✓ 完成' : '+ 1次';
+    btn.textContent = done >= target ? '− 1次' : '+ 1次';
     btn.className = done >= target ? 'week-btn done' : 'week-btn';
     count.textContent = `${done}/${target} 次`;
   });
