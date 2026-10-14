@@ -11,22 +11,22 @@
   h1{text-align:center;font-size:1.3rem;color:var(--blue);margin-bottom:2px}
   .updated{text-align:center;color:var(--sub);font-size:0.72rem;margin-bottom:14px}
 
-  /* 今日概览 */
-  .today-panel{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-around}
-  .today-stat{text-align:center}
-  .today-ring{width:64px;height:64px;margin:0 auto 4px;position:relative}
-  .today-ring svg{transform:rotate(-90deg)}
-  .today-ring-bg{fill:none;stroke:var(--border);stroke-width:6}
-  .today-ring-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .5s}
-  .today-ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700}
-  .today-label{font-size:0.72rem;color:var(--sub)}
-
-  /* 打卡总览条 */
+  /* 总体进度条 */
   .overall-bar{background:var(--card);border-radius:10px;padding:12px 16px;margin-bottom:14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}
   .overall-label{font-size:0.8rem;white-space:nowrap}
   .overall-track{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden}
-  .overall-fill{height:100%;border-radius:5px;transition:width .5s}
+  .overall-fill{height:100%;border-radius:5px;transition:width .5s;background:linear-gradient(90deg,#1d9bf0,#00ba7c,#7856ff)}
   .overall-pct{font-size:0.85rem;font-weight:700;min-width:40px;text-align:right}
+
+  /* 今日概览 */
+  .today-panel{background:var(--card);border-radius:14px;padding:14px;margin-bottom:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-around}
+  .today-stat{text-align:center}
+  .today-ring{width:60px;height:60px;margin:0 auto 4px;position:relative}
+  .today-ring svg{transform:rotate(-90deg)}
+  .today-ring-bg{fill:none;stroke:var(--border);stroke-width:6}
+  .today-ring-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .5s}
+  .today-ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:700}
+  .today-label{font-size:0.7rem;color:var(--sub)}
 
   /* 目标卡片 */
   .board{display:grid;grid-template-columns:1fr;gap:14px}
@@ -34,71 +34,85 @@
   .card-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
   .card-icon{font-size:1.2rem}
   .card-title{font-size:0.95rem;font-weight:700}
-  .deadline-tag{font-size:0.65rem;padding:2px 7px;border-radius:10px;margin-left:auto;background:var(--border);color:var(--sub)}
-  .deadline-tag.soon{background:rgba(244,33,46,0.2);color:var(--red)}
+  .deadline-tag{font-size:0.65rem;padding:2px 8px;border-radius:10px;margin-left:auto;background:var(--border);color:var(--sub)}
 
-  /* 总体进度 */
-  .prog-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-  .prog-label{font-size:0.75rem;color:var(--sub);width:60px;flex-shrink:0}
-  .prog-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+  /* 进度条 */
+  .prog-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .prog-label{font-size:0.72rem;color:var(--sub);width:60px;flex-shrink:0}
+  .prog-track{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
   .prog-fill{height:100%;border-radius:4px;transition:width .5s}
-  .prog-pct{font-size:0.78rem;font-weight:700;min-width:36px;text-align:right}
+  .prog-pct{font-size:0.75rem;font-weight:700;min-width:32px;text-align:right}
 
-  /* 今日任务 */
-  .today-tasks{margin-bottom:12px}
-  .today-title{font-size:0.72rem;color:var(--sub);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-  .today-title span{font-size:0.8rem;font-weight:600}
-  .task-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)}
+  /* 任务区块 */
+  .task-block{margin-bottom:10px}
+  .task-block-title{font-size:0.68rem;color:var(--sub);margin-bottom:5px;display:flex;align-items:center;gap:4px}
+  .task-block-title span{font-size:0.78rem;font-weight:600;color:var(--text)}
+  .task-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
   .task-item:last-child{border-bottom:none}
-  .task-chk{width:16px;height:16px;accent-color:var(--blue);cursor:pointer;flex-shrink:0}
+  .task-chk{width:15px;height:15px;accent-color:var(--blue);cursor:pointer;flex-shrink:0}
   .task-text{font-size:0.82rem;flex:1}
   .task-text.done{text-decoration:line-through;color:var(--sub)}
-  .task-note{font-size:0.68rem;color:var(--sub);margin-left:auto;white-space:nowrap}
-  .task-input{width:44px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 5px;font-size:0.78rem;margin:0 2px}
+  .task-input{width:42px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 5px;font-size:0.78rem;margin:0 1px}
+
+  /* 周任务 */
+  .week-block{margin-bottom:10px}
+  .week-title{font-size:0.68rem;color:var(--sub);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+  .week-title span{font-size:0.78rem;font-weight:600}
+  .week-reset{font-size:0.65rem;color:var(--blue);cursor:pointer;margin-left:auto}
+  .week-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
+  .week-item:last-child{border-bottom:none}
+  .week-btn{background:var(--border);border:none;color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:0.8rem;min-width:70px;text-align:center;transition:all .2s}
+  .week-btn.done{background:var(--green);color:#fff}
+  .week-btn:hover{opacity:0.85}
+  .week-label{font-size:0.82rem;flex:1}
+  .week-count{font-size:0.75rem;color:var(--sub);white-space:nowrap}
+  .week-note{font-size:0.65rem;color:var(--sub);margin-left:auto}
+
+  /* 体重 */
+  .weight-row{display:flex;align-items:center;gap:6px;padding:8px 0;border-top:1px solid var(--border);margin-top:4px}
+  .weight-label{font-size:0.75rem;color:var(--sub)}
+  .weight-input{width:48px;background:var(--border);border:none;color:var(--text);border-radius:6px;padding:3px 8px;font-size:0.85rem;font-weight:700}
+  .weight-btn{background:var(--green);color:#fff;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:0.72rem}
+  .weight-info{font-size:0.7rem;color:var(--sub);margin-left:auto}
 
   /* 日历 */
-  .cal-section{}
+  .cal-section{margin-top:8px}
   .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
   .cal-month{font-size:0.78rem;font-weight:600}
   .cal-streak{font-size:0.68rem;color:var(--sub);background:var(--border);padding:2px 8px;border-radius:10px}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
   .cal-dn{font-size:0.6rem;color:var(--sub);text-align:center;padding-bottom:2px}
-  .cal-day{aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;cursor:pointer;transition:all .2s;background:var(--border);color:var(--sub)}
+  .cal-day{aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.62rem;cursor:pointer;transition:all .2s;background:var(--border);color:var(--sub)}
   .cal-day.checked{background:var(--blue);color:#fff;font-weight:600}
   .cal-day.today{border:2px solid var(--blue)}
   .cal-day.future{opacity:0.25;cursor:default}
   .cal-day.empty{}
-  .cal-note{font-size:0.68rem;color:var(--sub);margin-top:6px}
-
-  /* 总体进度环 */
-  .overview-rings{display:flex;justify-content:space-around;margin-bottom:14px}
+  .cal-note{font-size:0.65rem;color:var(--sub);margin-top:5px}
 
   @media(max-width:500px){
-    .today-ring{width:56px;height:56px}
-    .task-note{display:none}
+    .today-ring{width:52px;height:52px}
+    .week-note{display:none}
   }
 </style>
 </head>
 <body>
 <h1>🎯 每日打卡看板</h1>
-<div class="updated">今天是 <span id="today-str"></span></div>
+<div class="updated">今天是 <span id="today-str"></span>　<span style="color:var(--blue)" id="week-info"></span></div>
 
 <!-- 总体进度条 -->
 <div class="overall-bar">
   <div class="overall-label">总进度</div>
-  <div class="overall-track">
-    <div class="overall-fill" id="total-fill" style="width:13%;background:linear-gradient(90deg,#1d9bf0,#00ba7c,#7856ff)"></div>
-  </div>
-  <div class="overall-pct" id="total-pct">13%</div>
+  <div class="overall-track"><div class="overall-fill" id="total-fill" style="width:9%"></div></div>
+  <div class="overall-pct" id="total-pct">9%</div>
 </div>
 
 <!-- 今日概览 -->
 <div class="today-panel">
   <div class="today-stat">
     <div class="today-ring">
-      <svg width="64" height="64" viewBox="0 0 64 64">
-        <circle class="today-ring-bg" cx="32" cy="32" r="27"/>
-        <circle class="today-ring-fill" id="ring-eng" cx="32" cy="32" r="27" stroke="var(--red)" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+      <svg width="60" height="60" viewBox="0 0 60 60">
+        <circle class="today-ring-bg" cx="30" cy="30" r="25"/>
+        <circle class="today-ring-fill" id="ring-eng" cx="30" cy="30" r="25" stroke="var(--red)" stroke-dasharray="157" stroke-dashoffset="157"/>
       </svg>
       <div class="today-ring-text" id="ring-eng-text">0/3</div>
     </div>
@@ -106,9 +120,9 @@
   </div>
   <div class="today-stat">
     <div class="today-ring">
-      <svg width="64" height="64" viewBox="0 0 64 64">
-        <circle class="today-ring-bg" cx="32" cy="32" r="27"/>
-        <circle class="today-ring-fill" id="ring-health" cx="32" cy="32" r="27" stroke="var(--green)" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+      <svg width="60" height="60" viewBox="0 0 60 60">
+        <circle class="today-ring-bg" cx="30" cy="30" r="25"/>
+        <circle class="today-ring-fill" id="ring-health" cx="30" cy="30" r="25" stroke="var(--green)" stroke-dasharray="157" stroke-dashoffset="157"/>
       </svg>
       <div class="today-ring-text" id="ring-health-text">0/3</div>
     </div>
@@ -116,9 +130,9 @@
   </div>
   <div class="today-stat">
     <div class="today-ring">
-      <svg width="64" height="64" viewBox="0 0 64 64">
-        <circle class="today-ring-bg" cx="32" cy="32" r="27"/>
-        <circle class="today-ring-fill" id="ring-media" cx="32" cy="32" r="27" stroke="var(--purple)" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+      <svg width="60" height="60" viewBox="0 0 60 60">
+        <circle class="today-ring-bg" cx="30" cy="30" r="25"/>
+        <circle class="today-ring-fill" id="ring-media" cx="30" cy="30" r="25" stroke="var(--purple)" stroke-dasharray="157" stroke-dashoffset="157"/>
       </svg>
       <div class="today-ring-text" id="ring-media-text">0/1</div>
     </div>
@@ -129,35 +143,32 @@
 <!-- 目标卡片 -->
 <div class="board">
 
-  <!-- 英语外派 -->
+  <!-- ========== 英语外派 ========== -->
   <div class="card">
     <div class="card-head">
       <span class="card-icon">🌍</span>
       <span class="card-title">英语外派</span>
-      <span class="deadline-tag" id="eng-deadline">2027-04-30</span>
+      <span class="deadline-tag">截止 2027-04-30</span>
     </div>
     <div class="prog-row">
       <span class="prog-label">总体进度</span>
-      <div class="prog-track"><div class="prog-fill" id="eng-prog" style="width:17%;background:var(--red)"></div></div>
-      <span class="prog-pct" id="eng-prog-pct">17%</span>
+      <div class="prog-track"><div class="prog-fill" id="eng-prog" style="width:9%;background:var(--red)"></div></div>
+      <span class="prog-pct" id="eng-prog-pct">9%</span>
     </div>
 
-    <div class="today-tasks">
-      <div class="today-title">📋 今日任务 <span id="eng-today-status">0/3</span></div>
+    <div class="task-block">
+      <div class="task-block-title">📋 今日任务 <span id="eng-today-status">0/3</span></div>
       <div class="task-item">
         <input type="checkbox" class="task-chk" id="et1" data-type="eng">
         <label for="et1" class="task-text">背单词 <input type="number" class="task-input" id="et1v" value="30"> 个</label>
-        <span class="task-note">每日</span>
       </div>
       <div class="task-item">
         <input type="checkbox" class="task-chk" id="et2" data-type="eng">
         <label for="et2" class="task-text">听力 <input type="number" class="task-input" id="et2v" value="30"> 分钟</label>
-        <span class="task-note">每日</span>
       </div>
       <div class="task-item">
         <input type="checkbox" class="task-chk" id="et3" data-type="eng">
         <label for="et3" class="task-text">口语跟读/朗读练习</label>
-        <span class="task-note">每日</span>
       </div>
     </div>
 
@@ -167,16 +178,16 @@
         <span class="cal-streak" id="eng-streak">连续0天</span>
       </div>
       <div class="cal-grid" id="eng-cal"></div>
-      <div class="cal-note">✓ 点日期打卡，完成今日所有任务后点当天日期</div>
+      <div class="cal-note">✓ 完成今日全部任务后，点当天日期打卡</div>
     </div>
   </div>
 
-  <!-- 健康减重 -->
+  <!-- ========== 健康减重 ========== -->
   <div class="card">
     <div class="card-head">
       <span class="card-icon">💪</span>
       <span class="card-title">健康减重</span>
-      <span class="deadline-tag" id="health-deadline">2027-04-30</span>
+      <span class="deadline-tag">截止 2027-04-30</span>
     </div>
     <div class="prog-row">
       <span class="prog-label">总体进度</span>
@@ -189,31 +200,35 @@
       <span class="prog-pct" id="weight-prog-pct">62kg→55kg</span>
     </div>
 
-    <div class="today-tasks">
-      <div class="today-title">📋 今日任务 <span id="health-today-status">0/3</span></div>
-      <div class="task-item">
-        <input type="checkbox" class="task-chk" id="ht1" data-type="health">
-        <label for="ht1" class="task-text">游泳 ≥<input type="number" class="task-input" id="ht1v" value="1"> 次，≥<input type="number" class="task-input" id="ht1d" value="1000"> 米</label>
-        <span class="task-note">每周</span>
-      </div>
-      <div class="task-item">
-        <input type="checkbox" class="task-chk" id="ht2" data-type="health">
-        <label for="ht2" class="task-text">跑步 <input type="number" class="task-input" id="ht2v" value="2"> - <input type="number" class="task-input" id="ht2d" value="3"> 次/周</label>
-        <span class="task-note">每周</span>
-      </div>
+    <div class="task-block">
+      <div class="task-block-title">📋 今日任务 <span id="health-today-status">0/1</span></div>
       <div class="task-item">
         <input type="checkbox" class="task-chk" id="ht3" data-type="health">
         <label for="ht3" class="task-text">饮食控制：少油少糖，晚餐七分饱</label>
-        <span class="task-note">每日</span>
       </div>
     </div>
 
-    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
-      <span style="font-size:0.75rem;color:var(--sub)">当前体重：</span>
-      <input type="number" id="w-current" value="62" style="width:50px;background:var(--border);border:none;color:var(--text);border-radius:6px;padding:3px 8px;font-size:0.85rem;font-weight:600">
-      <span style="font-size:0.75rem;color:var(--sub)">kg</span>
-      <button onclick="updateWeight()" style="background:var(--green);color:#fff;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:0.75rem;margin-left:4px">更新</button>
-      <span style="font-size:0.7rem;color:var(--sub);margin-left:auto">起始62kg → 目标55kg</span>
+    <div class="week-block">
+      <div class="week-title">📆 本周任务（每周一自动重新计数）</div>
+      <div class="week-item">
+        <button class="week-btn" id="wk-swim-btn" onclick="weekInc('swim')">+ 1次</button>
+        <span class="week-label">游泳</span>
+        <span class="week-count" id="wk-swim-count">0/1 次</span>
+        <span class="week-note">≥1000米/次</span>
+      </div>
+      <div class="week-item">
+        <button class="week-btn" id="wk-run-btn" onclick="weekInc('run')">+ 1次</button>
+        <span class="week-label">跑步</span>
+        <span class="week-count" id="wk-run-count">0/3 次</span>
+        <span class="week-note">目标2-3次/周</span>
+      </div>
+    </div>
+
+    <div class="weight-row">
+      <span class="weight-label">当前体重</span>
+      <input type="number" class="weight-input" id="w-current" value="62"> kg
+      <button class="weight-btn" onclick="updateWeight()">更新</button>
+      <span class="weight-info">起始62kg → 目标55kg</span>
     </div>
 
     <div class="cal-section">
@@ -222,16 +237,16 @@
         <span class="cal-streak" id="health-streak">连续0天</span>
       </div>
       <div class="cal-grid" id="health-cal"></div>
-      <div class="cal-note">✓ 点日期打卡，完成今日所有任务后点当天日期</div>
+      <div class="cal-note">✓ 完成今日任务（饮食控制）后点当天日期打卡</div>
     </div>
   </div>
 
-  <!-- 自媒体+产品 -->
+  <!-- ========== 自媒体+产品 ========== -->
   <div class="card">
     <div class="card-head">
       <span class="card-icon">📱</span>
       <span class="card-title">自媒体 + 产品</span>
-      <span class="deadline-tag" id="media-deadline">2027-01-31</span>
+      <span class="deadline-tag">截止 2027-01-31</span>
     </div>
     <div class="prog-row">
       <span class="prog-label">总体进度</span>
@@ -239,12 +254,11 @@
       <span class="prog-pct" id="media-prog-pct">10%</span>
     </div>
 
-    <div class="today-tasks">
-      <div class="today-title">📋 今日任务 <span id="media-today-status">0/1</span></div>
+    <div class="task-block">
+      <div class="task-block-title">📋 今日任务 <span id="media-today-status">0/1</span></div>
       <div class="task-item">
         <input type="checkbox" class="task-chk" id="mt1" data-type="media">
         <label for="mt1" class="task-text">做自媒体内容 / 产品调研 / 学习相关</label>
-        <span class="task-note">每日</span>
       </div>
     </div>
 
@@ -254,153 +268,124 @@
         <span class="cal-streak" id="media-streak">连续0天</span>
       </div>
       <div class="cal-grid" id="media-cal"></div>
-      <div class="cal-note">✓ 点日期打卡，完成今日任务后点当天日期</div>
+      <div class="cal-note">✓ 完成今日任务后点当天日期打卡</div>
     </div>
   </div>
 
 </div>
 
-<div style="text-align:center;color:var(--sub);font-size:0.7rem;margin-top:20px">
+<div style="text-align:center;color:var(--sub);font-size:0.68rem;margin-top:20px">
   数据存本地 · 关闭不丢失 · 换设备需导出备份
 </div>
 
 <script>
 // ============ 配置 ============
 const CFG = {
-  eng: {
-    color: 'var(--red)',
-    totalTasks: 3,
-    tasks: ['et1','et2','et3'],
-    startDate: '2026-10-14',
-    endDate: '2027-04-30',
-    key: 'goal_v2_eng',
-    basePct: 0
-  },
-  health: {
-    color: 'var(--green)',
-    totalTasks: 3,
-    tasks: ['ht1','ht2','ht3'],
-    startDate: '2026-10-14',
-    endDate: '2027-04-30',
-    key: 'goal_v2_health',
-    basePct: 0
-  },
-  media: {
-    color: 'var(--purple)',
-    totalTasks: 1,
-    tasks: ['mt1'],
-    startDate: '2026-10-14',
-    endDate: '2027-01-31',
-    key: 'goal_v2_media',
-    basePct: 0
-  }
+  eng:   {color:'var(--red)',   dailyTasks:['et1','et2','et3'], totalDaily:3, startDate:'2026-10-14', endDate:'2027-04-30', key:'goal_v3_eng'},
+  health:{color:'var(--green)', dailyTasks:['ht3'],              totalDaily:1, startDate:'2026-10-14', endDate:'2027-04-30', key:'goal_v3_health'},
+  media: {color:'var(--purple)',dailyTasks:['mt1'],              totalDaily:1, startDate:'2026-10-14', endDate:'2027-01-31', key:'goal_v3_media'}
 };
+
+const WEEK_TARGETS = {swim:1, run:3};
 
 const today = new Date();
 const todayStr = today.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
 document.getElementById('today-str').textContent = todayStr;
 
-// ============ 初始化数据 ============
+// 显示本周信息
+function getWeekLabel() {
+  const now = new Date();
+  const dow = (now.getDay() + 6) % 7; // 周一=0
+  const mon = new Date(now); mon.setDate(now.getDate() - dow);
+  const sun = new Date(now); sun.setDate(mon.getDate() + 6);
+  const fmt = d => `${d.getMonth()+1}/${d.getDate()}`;
+  return `本周：${fmt(mon)} - ${fmt(sun)}`;
+}
+document.getElementById('week-info').textContent = getWeekLabel();
+
+// 获取当前周数（用于判断是否需要重置）
+function getWeekKey() {
+  const d = new Date(today);
+  d.setHours(0,0,0,0);
+  const dow = (d.getDay() + 6) % 7;
+  d.setDate(d.getDate() - dow);
+  return `${d.getFullYear()}-W${Math.ceil((d.getDate() + 6 - new Date(d.getFullYear(),0,1).getDate())/7)}`;
+}
+
+// ============ 数据初始化 ============
+function getData(key) {
+  if (!localStorage.getItem(key)) {
+    localStorage.setItem(key, JSON.stringify({cal:{}, tasks:{}, week:{swim:0,run:0}, weekKey:''}));
+  }
+  return JSON.parse(localStorage.getItem(key));
+}
+
+function saveData(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+// ============ 周重置逻辑 ============
+function checkWeekReset() {
+  const key = getWeekKey();
+  const healthData = getData('goal_v3_health');
+  if (healthData.weekKey !== key) {
+    healthData.week = {swim:0, run:0};
+    healthData.weekKey = key;
+    saveData('goal_v3_health', healthData);
+  }
+  updateWeekUI();
+}
+
+// ============ 周任务操作 ============
+function weekInc(type) {
+  const data = getData('goal_v3_health');
+  const target = WEEK_TARGETS[type];
+  if (data.week[type] < target) {
+    data.week[type]++;
+    saveData('goal_v3_health', data);
+    updateWeekUI();
+    updateHealthRing();
+  }
+}
+
+function updateWeekUI() {
+  const data = getData('goal_v3_health');
+  ['swim','run'].forEach(type => {
+    const done = data.week[type] || 0;
+    const target = WEEK_TARGETS[type];
+    const btn = document.getElementById('wk-' + type + '-btn');
+    const count = document.getElementById('wk-' + type + '-count');
+    btn.textContent = done >= target ? '✓ 完成' : '+ 1次';
+    btn.className = done >= target ? 'week-btn done' : 'week-btn';
+    count.textContent = `${done}/${target} 次`;
+  });
+}
+
+// ============ 每日任务 ============
 Object.keys(CFG).forEach(type => {
-  if (!localStorage.getItem(CFG[type].key)) {
-    localStorage.setItem(CFG[type].key, JSON.stringify({cal:{}, tasks:{}}));
-  }
-  renderCal(type);
-  renderTasks(type);
-  updateUI(type);
-  updateRing(type);
-});
+  const cfg = CFG[type];
+  const data = getData(cfg.key);
 
-function renderCal(type) {
-  const el = document.getElementById(type + '-cal');
-  el.innerHTML = '';
-  const y = today.getFullYear(), m = today.getMonth();
-  const firstDow = (new Date(y,m,1).getDay() + 6) % 7; // 周一=0
-  const days = new Date(y,m+1,0).getDate();
-  const saved = JSON.parse(localStorage.getItem(CFG[type].key));
-  const cal = saved.cal || {};
-  const todayKey = `${y}-${m+1}-${today.getDate()}`;
-
-  // 周一~周日
-  ['一','二','三','四','五','六','日'].forEach(d => {
-    const dn = document.createElement('div');
-    dn.className = 'cal-dn';
-    dn.textContent = d;
-    el.appendChild(dn);
-  });
-
-  // 空白格
-  for (let i = 0; i < firstDow; i++) {
-    const empty = document.createElement('div');
-    empty.className = 'cal-day empty';
-    el.appendChild(empty);
-  }
-
-  // 日期格
-  for (let d = 1; d <= days; d++) {
-    const cell = document.createElement('div');
-    cell.className = 'cal-day';
-    const dateKey = `${y}-${m+1}-${d}`;
-    cell.textContent = d;
-    if (cal[dateKey]) cell.classList.add('checked');
-    if (d === today.getDate()) cell.classList.add('today');
-    if (d > today.getDate()) cell.classList.add('future');
-    cell.onclick = () => {
-      if (d > today.getDate()) return;
-      toggleDay(type, dateKey, cell);
-    };
-    el.appendChild(cell);
-  }
-
-  document.getElementById(type + '-month').textContent = `${y}年${m+1}月`;
-  updateStreak(type);
-}
-
-function toggleDay(type, dateKey, cell) {
-  const saved = JSON.parse(localStorage.getItem(CFG[type].key));
-  if (!saved.cal) saved.cal = {};
-  saved.cal[dateKey] = !saved.cal[dateKey];
-  cell.classList.toggle('checked', saved.cal[dateKey]);
-  localStorage.setItem(CFG[type].key, JSON.stringify(saved));
-  updateStreak(type);
-  updateUI(type);
-  updateRing(type);
-}
-
-function updateStreak(type) {
-  const saved = JSON.parse(localStorage.getItem(CFG[type].key));
-  const cal = saved.cal || {};
-  const dates = Object.keys(cal).filter(k => cal[k]).sort().reverse();
-  let streak = 0, prev = null;
-  dates.forEach(d => {
-    if (!prev) { streak = 1; prev = d; return; }
-    const diff = (new Date(prev) - new Date(d)) / 86400000;
-    if (diff === 1) { streak++; prev = d; }
-    else return;
-  });
-  document.getElementById(type + '-streak').textContent = `连续${streak}天`;
-}
-
-function renderTasks(type) {
-  const tasks = CFG[type].tasks;
-  tasks.forEach(id => {
+  cfg.dailyTasks.forEach(id => {
     const chk = document.getElementById(id);
-    const saved = JSON.parse(localStorage.getItem(CFG[type].key));
     if (!chk) return;
-    const taskState = saved.tasks || {};
-    chk.checked = !!taskState[id];
+    chk.checked = !!(data.tasks && data.tasks[id]);
     updateTaskLabel(id, chk.checked);
     chk.onchange = () => {
-      if (!saved.tasks) saved.tasks = {};
-      saved.tasks[id] = chk.checked;
-      localStorage.setItem(CFG[type].key, JSON.stringify(saved));
+      if (!data.tasks) data.tasks = {};
+      data.tasks[id] = chk.checked;
+      saveData(cfg.key, data);
       updateTaskLabel(id, chk.checked);
       updateTodayStatus(type);
       updateRing(type);
     };
   });
+
+  renderCal(type);
   updateTodayStatus(type);
-}
+  updateRing(type);
+  updateUI(type);
+});
 
 function updateTaskLabel(id, done) {
   const label = document.getElementById(id).parentElement.querySelector('.task-text');
@@ -408,31 +393,44 @@ function updateTaskLabel(id, done) {
 }
 
 function updateTodayStatus(type) {
-  const tasks = CFG[type].tasks;
-  const saved = JSON.parse(localStorage.getItem(CFG[type].key));
-  const taskState = saved.tasks || {};
-  const done = tasks.filter(id => taskState[id]).length;
-  document.getElementById(type + '-today-status').textContent = `${done}/${tasks.length}`;
+  const cfg = CFG[type];
+  const data = getData(cfg.key);
+  const taskState = data.tasks || {};
+  const done = cfg.dailyTasks.filter(id => taskState[id]).length;
+  document.getElementById(type + '-today-status').textContent = `${done}/${cfg.totalDaily}`;
 }
 
+// ============ 环形进度 ============
 function updateRing(type) {
   const cfg = CFG[type];
-  const saved = JSON.parse(localStorage.getItem(cfg.key));
-  const taskState = saved.tasks || {};
-  const done = cfg.tasks.filter(id => taskState[id]).length;
-  const total = cfg.totalTasks;
-  const pct = done / total;
-  const circumference = 169.6; // 2*π*27
+  const data = getData(cfg.key);
+  const taskState = data.tasks || {};
+  const done = cfg.dailyTasks.filter(id => taskState[id]).length;
+  const pct = done / cfg.totalDaily;
+  const circumference = 157; // 2*π*25
   const offset = circumference * (1 - pct);
-  const ring = document.getElementById('ring-' + type);
-  ring.style.strokeDashoffset = offset;
-  document.getElementById('ring-' + type + '-text').textContent = `${done}/${total}`;
+  document.getElementById('ring-' + type).style.strokeDashoffset = offset;
+  document.getElementById('ring-' + type + '-text').textContent = `${done}/${cfg.totalDaily}`;
 }
 
+function updateHealthRing() {
+  const data = getData('goal_v3_health');
+  const swimDone = data.week.swim >= WEEK_TARGETS.swim ? 1 : 0;
+  const runDone = data.week.run >= WEEK_TARGETS.run ? 1 : 0;
+  const dietChk = document.getElementById('ht3').checked ? 1 : 0;
+  const total = 3;
+  const done = swimDone + runDone + dietChk;
+  const circumference = 157;
+  const offset = circumference * (1 - done/total);
+  document.getElementById('ring-health').style.strokeDashoffset = offset;
+  document.getElementById('ring-health-text').textContent = `${done}/${total}`;
+}
+
+// ============ 总体进度 ============
 function updateUI(type) {
   const cfg = CFG[type];
-  const saved = JSON.parse(localStorage.getItem(cfg.key));
-  const cal = saved.cal || {};
+  const data = getData(cfg.key);
+  const cal = data.cal || {};
   const daysTotal = Math.max(1, (new Date(cfg.endDate) - new Date(cfg.startDate)) / 86400000);
   const daysDone = Object.keys(cal).filter(k => cal[k]).length;
   const pct = Math.min(100, Math.round(daysDone / daysTotal * 100));
@@ -450,6 +448,72 @@ function updateTotalOverall() {
   document.getElementById('total-pct').textContent = total + '%';
 }
 
+// ============ 日历 ============
+function renderCal(type) {
+  const el = document.getElementById(type + '-cal');
+  el.innerHTML = '';
+  const y = today.getFullYear(), m = today.getMonth();
+  const firstDow = (new Date(y,m,1).getDay() + 6) % 7;
+  const days = new Date(y,m+1,0).getDate();
+  const data = getData(CFG[type].key);
+  const cal = data.cal || {};
+
+  ['一','二','三','四','五','六','日'].forEach(d => {
+    const dn = document.createElement('div');
+    dn.className = 'cal-dn';
+    dn.textContent = d;
+    el.appendChild(dn);
+  });
+
+  for (let i = 0; i < firstDow; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cal-day empty';
+    el.appendChild(empty);
+  }
+
+  for (let d = 1; d <= days; d++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    const dateKey = `${y}-${m+1}-${d}`;
+    cell.textContent = d;
+    if (cal[dateKey]) cell.classList.add('checked');
+    if (d === today.getDate()) cell.classList.add('today');
+    if (d > today.getDate()) cell.classList.add('future');
+    cell.onclick = () => {
+      if (d > today.getDate()) return;
+      toggleDay(type, dateKey, cell);
+    };
+    el.appendChild(cell);
+  }
+  document.getElementById(type + '-month').textContent = `${y}年${m+1}月`;
+  updateStreak(type);
+}
+
+function toggleDay(type, dateKey, cell) {
+  const data = getData(CFG[type].key);
+  if (!data.cal) data.cal = {};
+  data.cal[dateKey] = !data.cal[dateKey];
+  cell.classList.toggle('checked', data.cal[dateKey]);
+  saveData(CFG[type].key, data);
+  updateStreak(type);
+  updateUI(type);
+}
+
+function updateStreak(type) {
+  const data = getData(CFG[type].key);
+  const cal = data.cal || {};
+  const dates = Object.keys(cal).filter(k => cal[k]).sort().reverse();
+  let streak = 0, prev = null;
+  dates.forEach(d => {
+    if (!prev) { streak = 1; prev = d; return; }
+    const diff = (new Date(prev) - new Date(d)) / 86400000;
+    if (diff === 1) { streak++; prev = d; }
+    else return;
+  });
+  document.getElementById(type + '-streak').textContent = `连续${streak}天`;
+}
+
+// ============ 体重 ============
 function updateWeight() {
   const start = 62, end = 55;
   const current = parseFloat(document.getElementById('w-current').value);
@@ -457,14 +521,20 @@ function updateWeight() {
   const pct = Math.max(0, Math.min(100, Math.round(((start - current) / (start - end)) * 100)));
   document.getElementById('weight-prog').style.width = pct + '%';
   document.getElementById('weight-prog-pct').textContent = current + 'kg';
-  const healthPct = pct;
-  document.getElementById('health-prog').style.width = healthPct + '%';
-  document.getElementById('health-prog-pct').textContent = healthPct + '%';
+  document.getElementById('health-prog').style.width = pct + '%';
+  document.getElementById('health-prog-pct').textContent = pct + '%';
   updateTotalOverall();
-  const saved = JSON.parse(localStorage.getItem('goal_v2_health'));
-  saved.weight = current;
-  localStorage.setItem('goal_v2_health', JSON.stringify(saved));
+  const data = getData('goal_v3_health');
+  data.weight = current;
+  saveData('goal_v3_health', data);
 }
+
+// ============ 每日任务变化时更新健康环 ============
+document.getElementById('ht3').addEventListener('change', updateHealthRing);
+
+// ============ 启动 ============
+checkWeekReset();
+updateHealthRing();
 </script>
 </body>
 </html>
