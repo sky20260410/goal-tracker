@@ -3,65 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026年度目标监控看板</title>
+<title>每日打卡看板</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  :root{--bg:#0f1419;--card:#16181c;--border:#2f3336;--text:#e7e9ea;--sub:#71767b;--red:#f4212e;--green:#00ba7c;--purple:#7856ff;--blue:#1d9bf0}
-  body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:16px}
-  h1{text-align:center;font-size:1.4rem;color:var(--blue);margin-bottom:4px}
-  .updated{text-align:center;color:var(--sub);font-size:0.75rem;margin-bottom:16px}
-  .board{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  :root{--bg:#0f1419;--card:#16181c;--border:#2f3336;--text:#e7e9ea;--sub:#71767b;--red:#f4212e;--green:#00ba7c;--purple:#7856ff;--blue:#1d9bf0;--orange:#ff7a00}
+  body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:14px}
+  h1{text-align:center;font-size:1.3rem;color:var(--blue);margin-bottom:2px}
+  .updated{text-align:center;color:var(--sub);font-size:0.72rem;margin-bottom:14px}
+
+  /* 今日概览 */
+  .today-panel{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-around}
+  .today-stat{text-align:center}
+  .today-ring{width:64px;height:64px;margin:0 auto 4px;position:relative}
+  .today-ring svg{transform:rotate(-90deg)}
+  .today-ring-bg{fill:none;stroke:var(--border);stroke-width:6}
+  .today-ring-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .5s}
+  .today-ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700}
+  .today-label{font-size:0.72rem;color:var(--sub)}
+
+  /* 打卡总览条 */
+  .overall-bar{background:var(--card);border-radius:10px;padding:12px 16px;margin-bottom:14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}
+  .overall-label{font-size:0.8rem;white-space:nowrap}
+  .overall-track{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+  .overall-fill{height:100%;border-radius:5px;transition:width .5s}
+  .overall-pct{font-size:0.85rem;font-weight:700;min-width:40px;text-align:right}
+
+  /* 目标卡片 */
+  .board{display:grid;grid-template-columns:1fr;gap:14px}
   .card{background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--border)}
-  .card-wide{grid-column:1/-1}
   .card-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-  .card-icon{font-size:1.4rem}
-  .card-title{font-size:1rem;font-weight:600}
-  .badge{font-size:0.65rem;padding:2px 7px;border-radius:10px;margin-left:auto}
-  .b-red{background:var(--red);color:#fff}
-  .b-green{background:var(--green);color:#fff}
-  .b-purple{background:var(--purple);color:#fff}
-  .row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-  .label{font-size:0.78rem;color:var(--sub);width:70px;flex-shrink:0}
-  .value{font-size:0.85rem;font-weight:600}
-  .bar{background:var(--border);border-radius:6px;height:8px;overflow:hidden;margin-bottom:10px}
-  .fill{height:100%;border-radius:6px;transition:width .5s}
-  .f-red{background:linear-gradient(90deg,#f4212e,#ff6b6b)}
-  .f-green{gradient:linear-gradient(90deg,#00ba7c,#4ade80)}
-  .f-purple{background:linear-gradient(90deg,#7856ff,#a78bfa)}
-  .f-blue{background:linear-gradient(90deg,#1d9bf0,#60b8f7)}
-  .sub-list{margin-top:8px}
-  .sub-item{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-  .sub-item input[type=checkbox]{width:14px;height:14px;accent-color:var(--blue);cursor:pointer}
-  .sub-item label{font-size:0.8rem;cursor:pointer;flex:1;color:var(--text)}
-  .sub-item label.done{text-decoration:line-through;color:var(--sub)}
-  .deadline{font-size:0.72rem;color:var(--sub);background:var(--border);padding:2px 8px;border-radius:6px;margin-left:4px}
-  .calendar{margin-top:10px}
-  .cal-title{font-size:0.75rem;color:var(--sub);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+  .card-icon{font-size:1.2rem}
+  .card-title{font-size:0.95rem;font-weight:700}
+  .deadline-tag{font-size:0.65rem;padding:2px 7px;border-radius:10px;margin-left:auto;background:var(--border);color:var(--sub)}
+  .deadline-tag.soon{background:rgba(244,33,46,0.2);color:var(--red)}
+
+  /* 总体进度 */
+  .prog-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .prog-label{font-size:0.75rem;color:var(--sub);width:60px;flex-shrink:0}
+  .prog-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+  .prog-fill{height:100%;border-radius:4px;transition:width .5s}
+  .prog-pct{font-size:0.78rem;font-weight:700;min-width:36px;text-align:right}
+
+  /* 今日任务 */
+  .today-tasks{margin-bottom:12px}
+  .today-title{font-size:0.72rem;color:var(--sub);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .today-title span{font-size:0.8rem;font-weight:600}
+  .task-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)}
+  .task-item:last-child{border-bottom:none}
+  .task-chk{width:16px;height:16px;accent-color:var(--blue);cursor:pointer;flex-shrink:0}
+  .task-text{font-size:0.82rem;flex:1}
+  .task-text.done{text-decoration:line-through;color:var(--sub)}
+  .task-note{font-size:0.68rem;color:var(--sub);margin-left:auto;white-space:nowrap}
+  .task-input{width:44px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 5px;font-size:0.78rem;margin:0 2px}
+
+  /* 日历 */
+  .cal-section{}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+  .cal-month{font-size:0.78rem;font-weight:600}
+  .cal-streak{font-size:0.68rem;color:var(--sub);background:var(--border);padding:2px 8px;border-radius:10px}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-  .cal-day{aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:var(--sub);background:var(--border);cursor:pointer;transition:all .2s}
-  .cal-day.checked{background:var(--blue);color:#fff}
+  .cal-dn{font-size:0.6rem;color:var(--sub);text-align:center;padding-bottom:2px}
+  .cal-day{aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;cursor:pointer;transition:all .2s;background:var(--border);color:var(--sub)}
+  .cal-day.checked{background:var(--blue);color:#fff;font-weight:600}
   .cal-day.today{border:2px solid var(--blue)}
-  .cal-day.future{opacity:0.3;cursor:default}
-  .cal-day-name{font-size:0.6rem;color:var(--sub);text-align:center;padding-bottom:2px}
-  .cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px}
-  .note{font-size:0.72rem;color:var(--sub);margin-top:6px}
-  .ovals{display:flex;justify-content:center;gap:40px;margin-top:10px}
-  .oval-wrap{text-align:center}
-  .oval{width:72px;height:72px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;position:relative}
-  .ov-red{background:conic-gradient(var(--red) 0% var(--pct),var(--border) var(--pct) 100%)}
-  .ov-green{background:conic-gradient(var(--green) 0% var(--pct),var(--border) var(--pct) 100%)}
-  .ov-purple{background:conic-gradient(var(--purple) 0% var(--pct),var(--border) var(--pct) 100%)}
-  .oval-inner{width:56px;height:56px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:0.8rem}
-  .ov-label{font-size:0.72rem;color:var(--sub)}
-  .reset-btn{display:block;margin:14px auto 0;background:none;border:none;color:var(--sub);font-size:0.72rem);cursor:pointer}
-  .reset-btn:hover{color:var(--blue)}
-  @media(max-width:640px){.board{grid-template-columns:1fr}.ovals{gap:20px}.oval{width:60px;height:60px}.oval-inner{width:46px;height:46px}}
+  .cal-day.future{opacity:0.25;cursor:default}
+  .cal-day.empty{}
+  .cal-note{font-size:0.68rem;color:var(--sub);margin-top:6px}
+
+  /* 总体进度环 */
+  .overview-rings{display:flex;justify-content:space-around;margin-bottom:14px}
+
+  @media(max-width:500px){
+    .today-ring{width:56px;height:56px}
+    .task-note{display:none}
+  }
 </style>
 </head>
 <body>
-<h1>🎯 2026年度目标监控看板</h1>
-<div class="updated">更新于 <span id="today"></span></div>
+<h1>🎯 每日打卡看板</h1>
+<div class="updated">今天是 <span id="today-str"></span></div>
 
+<!-- 总体进度条 -->
+<div class="overall-bar">
+  <div class="overall-label">总进度</div>
+  <div class="overall-track">
+    <div class="overall-fill" id="total-fill" style="width:13%;background:linear-gradient(90deg,#1d9bf0,#00ba7c,#7856ff)"></div>
+  </div>
+  <div class="overall-pct" id="total-pct">13%</div>
+</div>
+
+<!-- 今日概览 -->
+<div class="today-panel">
+  <div class="today-stat">
+    <div class="today-ring">
+      <svg width="64" height="64" viewBox="0 0 64 64">
+        <circle class="today-ring-bg" cx="32" cy="32" r="27"/>
+        <circle class="today-ring-fill" id="ring-eng" cx="32" cy="32" r="27" stroke="var(--red)" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+      </svg>
+      <div class="today-ring-text" id="ring-eng-text">0/3</div>
+    </div>
+    <div class="today-label">🌍 英语</div>
+  </div>
+  <div class="today-stat">
+    <div class="today-ring">
+      <svg width="64" height="64" viewBox="0 0 64 64">
+        <circle class="today-ring-bg" cx="32" cy="32" r="27"/>
+        <circle class="today-ring-fill" id="ring-health" cx="32" cy="32" r="27" stroke="var(--green)" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+      </svg>
+      <div class="today-ring-text" id="ring-health-text">0/3</div>
+    </div>
+    <div class="today-label">💪 健康</div>
+  </div>
+  <div class="today-stat">
+    <div class="today-ring">
+      <svg width="64" height="64" viewBox="0 0 64 64">
+        <circle class="today-ring-bg" cx="32" cy="32" r="27"/>
+        <circle class="today-ring-fill" id="ring-media" cx="32" cy="32" r="27" stroke="var(--purple)" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+      </svg>
+      <div class="today-ring-text" id="ring-media-text">0/1</div>
+    </div>
+    <div class="today-label">📱 自媒体</div>
+  </div>
+</div>
+
+<!-- 目标卡片 -->
 <div class="board">
 
   <!-- 英语外派 -->
@@ -69,51 +134,41 @@
     <div class="card-head">
       <span class="card-icon">🌍</span>
       <span class="card-title">英语外派</span>
-      <span class="badge b-red">最高优先</span>
+      <span class="deadline-tag" id="eng-deadline">2027-04-30</span>
     </div>
-    <div class="row"><span class="label">截止日期</span><span class="value">2027-04-30</span><span class="deadline">6个月</span></div>
-    <div class="row"><span class="label">当前进度</span><span class="value" id="eng-pct">30%</span></div>
-    <div class="bar"><div class="fill f-red" id="eng-bar" style="width:30%"></div></div>
+    <div class="prog-row">
+      <span class="prog-label">总体进度</span>
+      <div class="prog-track"><div class="prog-fill" id="eng-prog" style="width:17%;background:var(--red)"></div></div>
+      <span class="prog-pct" id="eng-prog-pct">17%</span>
+    </div>
 
-    <div class="sub-list">
-      <div class="sub-item">
-        <input type="checkbox" id="e1">
-        <label for="e1">单词：每天背 <input type="number" id="e1v" value="20" style="width:40px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 4px;font-size:0.78rem"> 个单词 <span class="deadline">每日</span></label>
+    <div class="today-tasks">
+      <div class="today-title">📋 今日任务 <span id="eng-today-status">0/3</span></div>
+      <div class="task-item">
+        <input type="checkbox" class="task-chk" id="et1" data-type="eng">
+        <label for="et1" class="task-text">背单词 <input type="number" class="task-input" id="et1v" value="30"> 个</label>
+        <span class="task-note">每日</span>
       </div>
-      <div class="sub-item">
-        <input type="checkbox" id="e2">
-        <label for="e2">听力：每天 ≥ <input type="number" id="e2v" value="30" style="width:40px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 4px;font-size:0.78rem"> 分钟 <span class="deadline">每日</span></label>
+      <div class="task-item">
+        <input type="checkbox" class="task-chk" id="et2" data-type="eng">
+        <label for="et2" class="task-text">听力 <input type="number" class="task-input" id="et2v" value="30"> 分钟</label>
+        <span class="task-note">每日</span>
       </div>
-      <div class="sub-item">
-        <input type="checkbox" id="e3">
-        <label for="e3">口语：跟读或朗读练习 <span class="deadline">每日</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="e4">
-        <label for="e4">参加英语比赛（部门/公司） <span class="deadline">本月</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="e5">
-        <label for="e5">通过海外中心面试 <span class="deadline">2027-04</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="e6">
-        <label for="e6">能进行日常英语工作沟通 <span class="deadline">2027-04</span></label>
+      <div class="task-item">
+        <input type="checkbox" class="task-chk" id="et3" data-type="eng">
+        <label for="et3" class="task-text">口语跟读/朗读练习</label>
+        <span class="task-note">每日</span>
       </div>
     </div>
 
-    <div class="calendar">
-      <div class="cal-title">
-        <span>本月打卡日历</span>
-        <span id="eng-streak-text"></span>
-      </div>
-      <div class="cal-header">
-        <div class="cal-day-name">一</div><div class="cal-day-name">二</div><div class="cal-day-name">三</div>
-        <div class="cal-day-name">四</div><div class="cal-day-name">五</div><div class="cal-day-name">六</div><div class="cal-day-name">日</div>
+    <div class="cal-section">
+      <div class="cal-head">
+        <span class="cal-month" id="eng-month"></span>
+        <span class="cal-streak" id="eng-streak">连续0天</span>
       </div>
       <div class="cal-grid" id="eng-cal"></div>
+      <div class="cal-note">✓ 点日期打卡，完成今日所有任务后点当天日期</div>
     </div>
-    <div class="note">点击日期标记打卡，连续打卡天数自动统计</div>
   </div>
 
   <!-- 健康减重 -->
@@ -121,50 +176,54 @@
     <div class="card-head">
       <span class="card-icon">💪</span>
       <span class="card-title">健康减重</span>
-      <span class="badge b-green">核心目标</span>
+      <span class="deadline-tag" id="health-deadline">2027-04-30</span>
     </div>
-    <div class="row"><span class="label">截止日期</span><span class="value">2027-04-30</span><span class="deadline">6个月</span></div>
-    <div class="row"><span class="label">起始体重</span><span class="value"><input type="number" id="w-start" value="62" style="width:44px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 6px;font-size:0.85rem;font-weight:600"> kg</span></div>
-    <div class="row"><span class="label">目标体重</span><span class="value"><input type="number" id="w-end" value="55" style="width:44px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 6px;font-size:0.85rem;font-weight:600"> kg</span></div>
-    <div class="row"><span class="label">当前体重</span><span class="value"><input type="number" id="w-current" value="62" style="width:44px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 6px;font-size:0.85rem;font-weight:600"> kg</span> <button onclick="updateWeight()" style="background:var(--green);color:#fff;border:none;border-radius:6px;padding:2px 8px;cursor:pointer;font-size:0.72rem">更新</button></div>
-    <div class="row"><span class="label">当前进度</span><span class="value" id="health-pct">0%</span></div>
-    <div class="bar"><div class="fill" id="health-bar" style="width:0%;background:linear-gradient(90deg,#00ba7c,#4ade80)"></div></div>
-
-    <div class="sub-list">
-      <div class="sub-item">
-        <input type="checkbox" id="h1">
-        <label for="h1">每周游泳 ≥ <input type="number" id="h1v" value="1" style="width:36px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 4px;font-size:0.78rem"> 次，每次 ≥ <input type="number" id="h1d" value="1000" style="width:46px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 4px;font-size:0.78rem"> 米 <span class="deadline">每周</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="h2">
-        <label for="h2">学会自由泳：换气 + 打腿连贯 <span class="deadline">3个月</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="h3">
-        <label for="h3">每周跑步 <input type="number" id="h3v" value="2" style="width:36px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 4px;font-size:0.78rem"> - <input type="number" id="h3v2" value="3" style="width:36px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 4px;font-size:0.78rem"> 次 <span class="deadline">每周</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="h4">
-        <label for="h4">饮食控制：少油少糖，晚餐七分饱 <span class="deadline">每日</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="h5">
-        <label for="h5">体重减至 <input type="number" id="h5v" value="55" style="width:36px;background:var(--border);border:none;color:var(--text);border-radius:4px;padding:1px 4px;font-size:0.78rem"> kg <span class="deadline">2027-04</span></label>
-      </div>
+    <div class="prog-row">
+      <span class="prog-label">总体进度</span>
+      <div class="prog-track"><div class="prog-fill" id="health-prog" style="width:0%;background:var(--green)"></div></div>
+      <span class="prog-pct" id="health-prog-pct">0%</span>
+    </div>
+    <div class="prog-row">
+      <span class="prog-label">体重进度</span>
+      <div class="prog-track"><div class="prog-fill" id="weight-prog" style="width:0%;background:linear-gradient(90deg,#00ba7c,#4ade80)"></div></div>
+      <span class="prog-pct" id="weight-prog-pct">62kg→55kg</span>
     </div>
 
-    <div class="calendar">
-      <div class="cal-title">
-        <span>本月打卡日历</span>
-        <span id="health-streak-text"></span>
+    <div class="today-tasks">
+      <div class="today-title">📋 今日任务 <span id="health-today-status">0/3</span></div>
+      <div class="task-item">
+        <input type="checkbox" class="task-chk" id="ht1" data-type="health">
+        <label for="ht1" class="task-text">游泳 ≥<input type="number" class="task-input" id="ht1v" value="1"> 次，≥<input type="number" class="task-input" id="ht1d" value="1000"> 米</label>
+        <span class="task-note">每周</span>
       </div>
-      <div class="cal-header">
-        <div class="cal-day-name">一</div><div class="cal-day-name">二</div><div class="cal-day-name">三</div>
-        <div class="cal-day-name">四</div><div class="cal-day-name">五</div><div class="cal-day-name">六</div><div class="cal-day-name">日</div>
+      <div class="task-item">
+        <input type="checkbox" class="task-chk" id="ht2" data-type="health">
+        <label for="ht2" class="task-text">跑步 <input type="number" class="task-input" id="ht2v" value="2"> - <input type="number" class="task-input" id="ht2d" value="3"> 次/周</label>
+        <span class="task-note">每周</span>
+      </div>
+      <div class="task-item">
+        <input type="checkbox" class="task-chk" id="ht3" data-type="health">
+        <label for="ht3" class="task-text">饮食控制：少油少糖，晚餐七分饱</label>
+        <span class="task-note">每日</span>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
+      <span style="font-size:0.75rem;color:var(--sub)">当前体重：</span>
+      <input type="number" id="w-current" value="62" style="width:50px;background:var(--border);border:none;color:var(--text);border-radius:6px;padding:3px 8px;font-size:0.85rem;font-weight:600">
+      <span style="font-size:0.75rem;color:var(--sub)">kg</span>
+      <button onclick="updateWeight()" style="background:var(--green);color:#fff;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:0.75rem;margin-left:4px">更新</button>
+      <span style="font-size:0.7rem;color:var(--sub);margin-left:auto">起始62kg → 目标55kg</span>
+    </div>
+
+    <div class="cal-section">
+      <div class="cal-head">
+        <span class="cal-month" id="health-month"></span>
+        <span class="cal-streak" id="health-streak">连续0天</span>
       </div>
       <div class="cal-grid" id="health-cal"></div>
+      <div class="cal-note">✓ 点日期打卡，完成今日所有任务后点当天日期</div>
     </div>
-    <div class="note">点击日期标记打卡，跑步/游泳/饮食皆可打卡</div>
   </div>
 
   <!-- 自媒体+产品 -->
@@ -172,206 +231,239 @@
     <div class="card-head">
       <span class="card-icon">📱</span>
       <span class="card-title">自媒体 + 产品</span>
-      <span class="badge b-purple">赚钱变现</span>
+      <span class="deadline-tag" id="media-deadline">2027-01-31</span>
     </div>
-    <div class="row"><span class="label">截止日期</span><span class="value">2027-01-31</span><span class="deadline">3个月</span></div>
-    <div class="row"><span class="label">当前进度</span><span class="value" id="media-pct">10%</span></div>
-    <div class="bar"><div class="fill f-purple" id="media-bar" style="width:10%"></div></div>
+    <div class="prog-row">
+      <span class="prog-label">总体进度</span>
+      <div class="prog-track"><div class="prog-fill" id="media-prog" style="width:10%;background:var(--purple)"></div></div>
+      <span class="prog-pct" id="media-prog-pct">10%</span>
+    </div>
 
-    <div class="sub-list">
-      <div class="sub-item">
-        <input type="checkbox" id="m1">
-        <label for="m1">确定自媒体起步方向（娃视频/读书分享） <span class="deadline">2周内</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="m2">
-        <label for="m2">发布第1个作品 <span class="deadline">1个月</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="m3">
-        <label for="m3">建立固定更新节奏（每周 × 条） <span class="deadline">2个月</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="m4">
-        <label for="m4">探索产品方向（用户需求调研） <span class="deadline">2个月</span></label>
-      </div>
-      <div class="sub-item">
-        <input type="checkbox" id="m5">
-        <label for="m5">产品方向初步验证（可不可行） <span class="deadline">3个月</span></label>
+    <div class="today-tasks">
+      <div class="today-title">📋 今日任务 <span id="media-today-status">0/1</span></div>
+      <div class="task-item">
+        <input type="checkbox" class="task-chk" id="mt1" data-type="media">
+        <label for="mt1" class="task-text">做自媒体内容 / 产品调研 / 学习相关</label>
+        <span class="task-note">每日</span>
       </div>
     </div>
 
-    <div class="calendar">
-      <div class="cal-title">
-        <span>本月打卡日历</span>
-        <span id="media-streak-text"></span>
-      </div>
-      <div class="cal-header">
-        <div class="cal-day-name">一</div><div class="cal-day-name">二</div><div class="cal-day-name">三</div>
-        <div class="cal-day-name">四</div><div class="cal-day-name">五</div><div class="cal-day-name">六</div><div class="cal-day-name">日</div>
+    <div class="cal-section">
+      <div class="cal-head">
+        <span class="cal-month" id="media-month"></span>
+        <span class="cal-streak" id="media-streak">连续0天</span>
       </div>
       <div class="cal-grid" id="media-cal"></div>
+      <div class="cal-note">✓ 点日期打卡，完成今日任务后点当天日期</div>
     </div>
-    <div class="note">每次做内容相关工作后点一下打卡</div>
-  </div>
-
-  <!-- 总体概览 -->
-  <div class="card card-wide">
-    <div class="card-head">
-      <span class="card-icon">📊</span>
-      <span class="card-title">总体进度</span>
-    </div>
-    <div class="ovals">
-      <div class="oval-wrap">
-        <div class="oval ov-red" id="ov-eng" style="--pct:30%">
-          <div class="oval-inner" id="ov-eng-i">30%</div>
-        </div>
-        <div class="ov-label">英语外派</div>
-      </div>
-      <div class="oval-wrap">
-        <div class="oval ov-green" id="ov-health" style="--pct:0%">
-          <div class="oval-inner" id="ov-health-i">0%</div>
-        </div>
-        <div class="ov-label">健康减重</div>
-      </div>
-      <div class="oval-wrap">
-        <div class="oval ov-purple" id="ov-media" style="--pct:10%">
-          <div class="oval-inner" id="ov-media-i">10%</div>
-        </div>
-        <div class="ov-label">自媒体+产品</div>
-      </div>
-    </div>
-    <div class="note" style="text-align:center;margin-top:12px">数据保存在本地浏览器，关闭后不丢失。重置数据会清除所有进度。</div>
-    <button class="reset-btn" onclick="if(confirm('确定重置全部数据？')){Object.keys(localStorage).forEach(k=>k.startsWith('goal_')&&localStorage.removeItem(k));location.reload()}">重置所有数据</button>
   </div>
 
 </div>
 
-<script>
-const todayEl = document.getElementById('today');
-const now = new Date();
-todayEl.textContent = now.toLocaleDateString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'});
+<div style="text-align:center;color:var(--sub);font-size:0.7rem;margin-top:20px">
+  数据存本地 · 关闭不丢失 · 换设备需导出备份
+</div>
 
-const TYPES = {
-  eng:   {key:'goal_eng',   label:'英语外派',   color:'var(--red)',   initial:30, items:6},
-  health:{key:'goal_health',label:'健康减重',   color:'var(--green)',  initial:0,  items:5},
-  media: {key:'goal_media', label:'自媒体+产品', color:'var(--purple)', initial:10, items:5}
+<script>
+// ============ 配置 ============
+const CFG = {
+  eng: {
+    color: 'var(--red)',
+    totalTasks: 3,
+    tasks: ['et1','et2','et3'],
+    startDate: '2026-10-14',
+    endDate: '2027-04-30',
+    key: 'goal_v2_eng',
+    basePct: 0
+  },
+  health: {
+    color: 'var(--green)',
+    totalTasks: 3,
+    tasks: ['ht1','ht2','ht3'],
+    startDate: '2026-10-14',
+    endDate: '2027-04-30',
+    key: 'goal_v2_health',
+    basePct: 0
+  },
+  media: {
+    color: 'var(--purple)',
+    totalTasks: 1,
+    tasks: ['mt1'],
+    startDate: '2026-10-14',
+    endDate: '2027-01-31',
+    key: 'goal_v2_media',
+    basePct: 0
+  }
 };
 
-// 初始化
-Object.keys(TYPES).forEach(t => {
-  if (!localStorage.getItem(TYPES[t].key)) {
-    const obj = {pct:TYPES[t].initial,subs:{},cal:{}};
-    localStorage.setItem(TYPES[t].key, JSON.stringify(obj));
+const today = new Date();
+const todayStr = today.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+document.getElementById('today-str').textContent = todayStr;
+
+// ============ 初始化数据 ============
+Object.keys(CFG).forEach(type => {
+  if (!localStorage.getItem(CFG[type].key)) {
+    localStorage.setItem(CFG[type].key, JSON.stringify({cal:{}, tasks:{}}));
   }
-  renderCal(t);
-  renderSubs(t);
-  updateUI(t);
-  updateStreakText(t);
+  renderCal(type);
+  renderTasks(type);
+  updateUI(type);
+  updateRing(type);
 });
 
 function renderCal(type) {
-  const container = document.getElementById(type + '-cal');
-  container.innerHTML = '';
-  const y = now.getFullYear(), m = now.getMonth();
-  const firstDay = new Date(y, m, 1).getDay() || 7;
-  const daysInMonth = new Date(y, m+1, 0).getDate();
-  const saved = JSON.parse(localStorage.getItem(TYPES[type].key));
-  const calData = saved.cal || {};
+  const el = document.getElementById(type + '-cal');
+  el.innerHTML = '';
+  const y = today.getFullYear(), m = today.getMonth();
+  const firstDow = (new Date(y,m,1).getDay() + 6) % 7; // 周一=0
+  const days = new Date(y,m+1,0).getDate();
+  const saved = JSON.parse(localStorage.getItem(CFG[type].key));
+  const cal = saved.cal || {};
+  const todayKey = `${y}-${m+1}-${today.getDate()}`;
 
-  // 填充空白
-  for (let i = 1; i < firstDay; i++) {
-    const d = document.createElement('div');
-    d.className = 'cal-day';
-    container.appendChild(d);
+  // 周一~周日
+  ['一','二','三','四','五','六','日'].forEach(d => {
+    const dn = document.createElement('div');
+    dn.className = 'cal-dn';
+    dn.textContent = d;
+    el.appendChild(dn);
+  });
+
+  // 空白格
+  for (let i = 0; i < firstDow; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cal-day empty';
+    el.appendChild(empty);
   }
-  // 填日期
-  for (let d = 1; d <= daysInMonth; d++) {
-    const el = document.createElement('div');
-    el.className = 'cal-day';
-    el.textContent = d;
-    const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    if (calData[dateStr]) el.classList.add('checked');
-    if (d === now.getDate()) el.classList.add('today');
-    if (d > now.getDate()) el.classList.add('future');
-    el.onclick = () => {
-      if (d > now.getDate()) return;
-      toggleDay(type, dateStr, el);
+
+  // 日期格
+  for (let d = 1; d <= days; d++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    const dateKey = `${y}-${m+1}-${d}`;
+    cell.textContent = d;
+    if (cal[dateKey]) cell.classList.add('checked');
+    if (d === today.getDate()) cell.classList.add('today');
+    if (d > today.getDate()) cell.classList.add('future');
+    cell.onclick = () => {
+      if (d > today.getDate()) return;
+      toggleDay(type, dateKey, cell);
     };
-    container.appendChild(el);
+    el.appendChild(cell);
   }
+
+  document.getElementById(type + '-month').textContent = `${y}年${m+1}月`;
+  updateStreak(type);
 }
 
-function toggleDay(type, dateStr, el) {
-  const saved = JSON.parse(localStorage.getItem(TYPES[type].key));
+function toggleDay(type, dateKey, cell) {
+  const saved = JSON.parse(localStorage.getItem(CFG[type].key));
   if (!saved.cal) saved.cal = {};
-  saved.cal[dateStr] = !saved.cal[dateStr];
-  el.classList.toggle('checked', saved.cal[dateStr]);
-  localStorage.setItem(TYPES[type].key, JSON.stringify(saved));
-  updateStreakText(type);
+  saved.cal[dateKey] = !saved.cal[dateKey];
+  cell.classList.toggle('checked', saved.cal[dateKey]);
+  localStorage.setItem(CFG[type].key, JSON.stringify(saved));
+  updateStreak(type);
+  updateUI(type);
+  updateRing(type);
 }
 
-function updateStreakText(type) {
-  const saved = JSON.parse(localStorage.getItem(TYPES[type].key));
+function updateStreak(type) {
+  const saved = JSON.parse(localStorage.getItem(CFG[type].key));
   const cal = saved.cal || {};
   const dates = Object.keys(cal).filter(k => cal[k]).sort().reverse();
   let streak = 0, prev = null;
-  const todayStr = now.toISOString().split('T')[0];
   dates.forEach(d => {
     if (!prev) { streak = 1; prev = d; return; }
     const diff = (new Date(prev) - new Date(d)) / 86400000;
     if (diff === 1) { streak++; prev = d; }
     else return;
   });
-  document.getElementById(type + '-streak-text').textContent = `连续打卡 ${streak} 天`;
+  document.getElementById(type + '-streak').textContent = `连续${streak}天`;
 }
 
-function renderSubs(type) {
-  const saved = JSON.parse(localStorage.getItem(TYPES[type].key));
-  const subs = saved.subs || {};
-  const count = Object.keys(TYPES[type].items).length || 5;
-  const ids = type==='eng'?'e1,e2,e3,e4,e5,e6'.split(','):type==='health'?'h1,h2,h3,h4,h5'.split(','):'m1,m2,m3,m4,m5'.split(',');
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.checked = !!subs[id];
-    el.parentElement.querySelector('label').className = subs[id] ? 'done' : '';
-    el.onchange = () => {
-      subs[id] = el.checked;
-      saved.subs = subs;
-      el.parentElement.querySelector('label').className = subs[id] ? 'done' : '';
-      const doneCount = ids.filter(iid => subs[iid]).length;
-      const basePct = TYPES[type].initial;
-      const addPct = Math.round((100 - basePct) * doneCount / ids.length);
-      saved.pct = Math.min(100, basePct + addPct);
-      localStorage.setItem(TYPES[type].key, JSON.stringify(saved));
-      updateUI(type);
+function renderTasks(type) {
+  const tasks = CFG[type].tasks;
+  tasks.forEach(id => {
+    const chk = document.getElementById(id);
+    const saved = JSON.parse(localStorage.getItem(CFG[type].key));
+    if (!chk) return;
+    const taskState = saved.tasks || {};
+    chk.checked = !!taskState[id];
+    updateTaskLabel(id, chk.checked);
+    chk.onchange = () => {
+      if (!saved.tasks) saved.tasks = {};
+      saved.tasks[id] = chk.checked;
+      localStorage.setItem(CFG[type].key, JSON.stringify(saved));
+      updateTaskLabel(id, chk.checked);
+      updateTodayStatus(type);
+      updateRing(type);
     };
   });
+  updateTodayStatus(type);
+}
+
+function updateTaskLabel(id, done) {
+  const label = document.getElementById(id).parentElement.querySelector('.task-text');
+  if (label) label.className = done ? 'task-text done' : 'task-text';
+}
+
+function updateTodayStatus(type) {
+  const tasks = CFG[type].tasks;
+  const saved = JSON.parse(localStorage.getItem(CFG[type].key));
+  const taskState = saved.tasks || {};
+  const done = tasks.filter(id => taskState[id]).length;
+  document.getElementById(type + '-today-status').textContent = `${done}/${tasks.length}`;
+}
+
+function updateRing(type) {
+  const cfg = CFG[type];
+  const saved = JSON.parse(localStorage.getItem(cfg.key));
+  const taskState = saved.tasks || {};
+  const done = cfg.tasks.filter(id => taskState[id]).length;
+  const total = cfg.totalTasks;
+  const pct = done / total;
+  const circumference = 169.6; // 2*π*27
+  const offset = circumference * (1 - pct);
+  const ring = document.getElementById('ring-' + type);
+  ring.style.strokeDashoffset = offset;
+  document.getElementById('ring-' + type + '-text').textContent = `${done}/${total}`;
 }
 
 function updateUI(type) {
-  const saved = JSON.parse(localStorage.getItem(TYPES[type].key));
-  const pct = Math.round(saved.pct);
-  document.getElementById(type + '-pct').textContent = pct + '%';
-  document.getElementById(type + '-bar').style.width = pct + '%';
-  document.getElementById('ov-' + type).style.setProperty('--pct', pct + '%');
-  document.getElementById('ov-' + type + '-i').textContent = pct + '%';
+  const cfg = CFG[type];
+  const saved = JSON.parse(localStorage.getItem(cfg.key));
+  const cal = saved.cal || {};
+  const daysTotal = Math.max(1, (new Date(cfg.endDate) - new Date(cfg.startDate)) / 86400000);
+  const daysDone = Object.keys(cal).filter(k => cal[k]).length;
+  const pct = Math.min(100, Math.round(daysDone / daysTotal * 100));
+  document.getElementById(type + '-prog').style.width = pct + '%';
+  document.getElementById(type + '-prog-pct').textContent = pct + '%';
+  updateTotalOverall();
+}
+
+function updateTotalOverall() {
+  const eng = parseInt(document.getElementById('eng-prog-pct').textContent);
+  const health = parseInt(document.getElementById('health-prog-pct').textContent);
+  const media = parseInt(document.getElementById('media-prog-pct').textContent);
+  const total = Math.round((eng + health + media) / 3);
+  document.getElementById('total-fill').style.width = total + '%';
+  document.getElementById('total-pct').textContent = total + '%';
 }
 
 function updateWeight() {
-  const start = parseFloat(document.getElementById('w-start').value);
-  const end = parseFloat(document.getElementById('w-end').value);
+  const start = 62, end = 55;
   const current = parseFloat(document.getElementById('w-current').value);
-  if (!start || !end || !current) return;
-  const pct = Math.round(((start - current) / (start - end)) * 100);
-  const saved = JSON.parse(localStorage.getItem('goal_health'));
-  saved.pct = Math.max(0, Math.min(100, pct));
-  localStorage.setItem('goal_health', JSON.stringify(saved));
-  document.getElementById('health-pct').textContent = saved.pct + '%';
-  document.getElementById('health-bar').style.width = saved.pct + '%';
-  document.getElementById('ov-health').style.setProperty('--pct', saved.pct + '%');
-  document.getElementById('ov-health-i').textContent = saved.pct + '%';
+  if (!current) return;
+  const pct = Math.max(0, Math.min(100, Math.round(((start - current) / (start - end)) * 100)));
+  document.getElementById('weight-prog').style.width = pct + '%';
+  document.getElementById('weight-prog-pct').textContent = current + 'kg';
+  const healthPct = pct;
+  document.getElementById('health-prog').style.width = healthPct + '%';
+  document.getElementById('health-prog-pct').textContent = healthPct + '%';
+  updateTotalOverall();
+  const saved = JSON.parse(localStorage.getItem('goal_v2_health'));
+  saved.weight = current;
+  localStorage.setItem('goal_v2_health', JSON.stringify(saved));
 }
 </script>
 </body>
