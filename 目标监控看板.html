@@ -65,8 +65,13 @@
   .week-btn.done{background:var(--green);color:#fff}
   .week-btn:hover{opacity:0.85}
   .week-label{font-size:0.82rem;flex:1}
-  .week-count{font-size:0.75rem;color:var(--sub);white-space:nowrap}
+  .week-count{font-size:0.75rem;color:var(--sub);white-space:nowrap;margin-left:auto}
   .week-note{font-size:0.65rem;color:var(--sub);margin-left:auto}
+
+  /* 圆点打卡 */
+  .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--green);cursor:pointer;transition:all .2s;flex-shrink:0}
+  .dot.filled{background:var(--green);border-color:var(--green)}
+  .dot-label{font-size:0.78rem;margin-right:8px;white-space:nowrap}
 
   /* 体重 */
   .weight-row{display:flex;align-items:center;gap:6px;padding:8px 0;border-top:1px solid var(--border);margin-top:4px}
@@ -209,18 +214,16 @@
     </div>
 
     <div class="week-block">
-      <div class="week-title">📆 本周任务（每周一自动重新计数）</div>
+      <div class="week-title">📆 本周任务（本周一自动重新计数）</div>
       <div class="week-item">
-        <button class="week-btn" id="wk-swim-btn" onclick="weekInc('swim')">+ 1次</button>
-        <span class="week-label">游泳</span>
-        <span class="week-count" id="wk-swim-count">0/1 次</span>
-        <span class="week-note">≥1000米/次</span>
+        <span class="dot-label">🏊 游泳</span>
+        <div style="display:flex;gap:6px;flex:1" id="swim-dots"></div>
+        <span class="week-count" id="wk-swim-count">0/1</span>
       </div>
       <div class="week-item">
-        <button class="week-btn" id="wk-run-btn" onclick="weekInc('run')">+ 1次</button>
-        <span class="week-label">跑步</span>
-        <span class="week-count" id="wk-run-count">0/3 次</span>
-        <span class="week-note">目标2-3次/周</span>
+        <span class="dot-label">🏃 跑步</span>
+        <div style="display:flex;gap:6px;flex:1" id="run-dots"></div>
+        <span class="week-count" id="wk-run-count">0/3</span>
       </div>
     </div>
 
@@ -337,30 +340,40 @@ function checkWeekReset() {
 }
 
 // ============ 周任务操作 ============
-function weekInc(type) {
+// ============ 周任务圆点打卡 ============
+const WEEK_TARGETS = {swim:1, run:3};
+
+function renderDots(type) {
   const data = getData('goal_v3_health');
+  const done = data.week[type] || 0;
   const target = WEEK_TARGETS[type];
-  if (data.week[type] < target) {
-    data.week[type]++;
+  const container = document.getElementById(type + '-dots');
+  container.innerHTML = '';
+  for (let i = 0; i < target; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i < done ? ' filled' : '');
+    dot.onclick = () => dotToggle(type, i);
+    container.appendChild(dot);
+  }
+  document.getElementById('wk-' + type + '-count').textContent = `${done}/${target}`;
+}
+
+function dotToggle(type, index) {
+  const data = getData('goal_v3_health');
+  const done = data.week[type] || 0;
+  if (index < done) {
+    data.week[type] = index;
   } else {
-    data.week[type] = Math.max(0, data.week[type] - 1);
+    data.week[type] = index + 1;
   }
   saveData('goal_v3_health', data);
-  updateWeekUI();
+  renderDots(type);
   updateHealthRing();
 }
 
 function updateWeekUI() {
-  const data = getData('goal_v3_health');
-  ['swim','run'].forEach(type => {
-    const done = data.week[type] || 0;
-    const target = WEEK_TARGETS[type];
-    const btn = document.getElementById('wk-' + type + '-btn');
-    const count = document.getElementById('wk-' + type + '-count');
-    btn.textContent = done >= target ? '− 1次' : '+ 1次';
-    btn.className = done >= target ? 'week-btn done' : 'week-btn';
-    count.textContent = `${done}/${target} 次`;
-  });
+  renderDots('swim');
+  renderDots('run');
 }
 
 // ============ 每日任务 ============
